@@ -1,26 +1,26 @@
-import express from 'express';
-import 'express-async-errors';
+import express from "express";
+import "express-async-errors";
 
-import cookieSession from 'cookie-session';
+import cookieSession from "cookie-session";
 
-import { json } from 'body-parser';
+import { json } from "body-parser";
 
-import { erroHandler, NotFoundError } from '@baritrade/common';
-
+import { erroHandler, NotFoundError } from "@baritrade/common";
+import { createTicketRouter } from "./routes/new";
 const app = express();
-app.set('trust proxy', true);
+app.set("trust proxy", true);
 app.use(json());
 
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== 'test',
+    secure: process.env.NODE_ENV !== "test",
   })
 );
 // All Routers
-
+app.use(createTicketRouter);
 // Handling not found routes
-app.all('*', async () => {
+app.all("*", async () => {
   throw new NotFoundError();
 });
 // Error Handling
