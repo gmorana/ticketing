@@ -1,10 +1,11 @@
 import moongose from 'mongoose';
-
+import { OrderStatus } from '@baritrade/common';
+import { TicketDoc } from './ticket';
 // AN interface that describes how to create an user
-
+export { OrderStatus };
 interface OrderAttrs {
   userId: string;
-  status: string;
+  status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
 }
@@ -12,7 +13,7 @@ interface OrderAttrs {
 // An interface that describes a User document created
 interface OrderDoc extends moongose.Document {
   userId: string;
-  status: string;
+  status: OrderStatus;
   experisAt: Date;
   ticket: TicketDoc;
 }
@@ -31,6 +32,8 @@ const orderSchema = new moongose.Schema(
     status: {
       type: String,
       required: true,
+      emun: Object.values(OrderStatus),
+      default: OrderStatus.Created,
     },
     expiresAt: {
       type: moongose.Schema.Types.Date,
