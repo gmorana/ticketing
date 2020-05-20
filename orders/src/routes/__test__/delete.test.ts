@@ -1,7 +1,8 @@
 import request from "supertest";
 import { app } from "../../app";
 import { Ticket } from "../../models/ticket";
-it("return an error in one user tries to fetch another users order", async () => {
+import { OrderStatus } from "../../models/order";
+it("marks an order as cancelled", async () => {
   // create a ticket
 
   const ticket = await Ticket.build({
@@ -16,10 +17,15 @@ it("return an error in one user tries to fetch another users order", async () =>
     .set("Cookie", user)
     .send({ ticketId: ticket.id })
     .expect(201);
-  // make a request to fetch the order
+  // make a request to cancel the order
+  await request(app)
+    .delete(`/api/orders/${order.id}`)
+    .set("Cookie", user)
+    .send()
+    .expect(204);
   const { body: fetchedOrder } = await request(app)
     .get(`/api/orders/${order.id}`)
-    .set("Cookie", global.signin())
-    .send()
-    .expect(401);
+    .set("Cookie", user)
+    .send();
+  expect(fetchedOrder.status).toEqual(OrderStatus.Cancelled);
 });
