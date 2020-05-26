@@ -1,28 +1,28 @@
-import mongoose from "mongoose";
-import express, { Request, Response } from "express";
-import { body } from "express-validator";
+import mongoose from 'mongoose';
+import express, { Request, Response } from 'express';
+import { body } from 'express-validator';
 import {
   requireAuth,
   validateRequest,
   NotFoundError,
   OrderStatus,
   BadRequestError,
-} from "@baritrade/common";
-import { Ticket } from "../models/ticket";
-import { Order } from "../models/order";
-import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
-import { natsWrapper } from "../nats-wrapper";
+} from '@baritrade/common';
+import { Ticket } from '../models/ticket';
+import { Order } from '../models/order';
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
+import { natsWrapper } from '../nats-wrapper';
 const router = express();
 const EXPIRATION_WINDOW_SECONDS = 15 * 60;
 router.post(
-  "/api/orders",
+  '/api/orders',
   requireAuth,
   [
-    body("ticketId")
+    body('ticketId')
       .not()
       .isEmpty()
       .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-      .withMessage("Ticket must be provided"),
+      .withMessage('Ticket must be provided'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ router.post(
 
     const isReserved = await ticket.isReserved();
     if (isReserved) {
-      throw new BadRequestError("Ticket is already reserved");
+      throw new BadRequestError('Ticket is already reserved');
     }
     // Calculate an expiration date for this order
     const expiration = new Date();
@@ -54,7 +54,7 @@ router.post(
       id: order.id,
       status: order.status,
       userId: order.userId,
-      expiresAt: order.experisAt.toISOString(),
+      expiresAt: order.expiresAt.toISOString(),
       ticket: {
         id: ticket.id,
         price: ticket.price,

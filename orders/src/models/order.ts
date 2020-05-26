@@ -14,7 +14,7 @@ interface OrderAttrs {
 interface OrderDoc extends moongose.Document {
   userId: string;
   status: OrderStatus;
-  experisAt: Date;
+  expiresAt: Date;
   ticket: TicketDoc;
 }
 // An interface that describes the properties
