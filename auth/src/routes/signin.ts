@@ -41,7 +41,8 @@ router.post(
 
     // Store jwt in the session object => req.session.jwt
     req.session = { jwt: userJwt };
-    res.status(200).send(existingUser);
+    //  console.log(req.session);
+    res.status(201).send(existingUser);
   }
 );
 export { router as signinRouter };
