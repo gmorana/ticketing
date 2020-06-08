@@ -1,12 +1,12 @@
-import express, { Request, Response } from "express";
-import { requireAuth } from "@baritrade/common";
-import { Order } from "../models/order";
-const router = express();
+import express, { Request, Response } from 'express';
+import { requireAuth } from '@baritrade/common';
+import { Order } from '../models/order';
+const router = express.Router();
 
-router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
+router.get('/api/orders', requireAuth, async (req: Request, res: Response) => {
   const orders = await Order.find({
     userId: req.currentUser!.id,
-  }).populate("ticket");
+  }).populate('ticket');
 
   res.send(orders);
 });

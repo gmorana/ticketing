@@ -1,4 +1,5 @@
 import moongose from 'mongoose';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import { OrderStatus } from '@baritrade/common';
 import { TicketDoc } from './ticket';
 // AN interface that describes how to create an user
@@ -16,6 +17,7 @@ interface OrderDoc extends moongose.Document {
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
+  version: number;
 }
 // An interface that describes the properties
 // that a Order Model has
@@ -52,7 +54,8 @@ const orderSchema = new moongose.Schema(
     },
   }
 );
-
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 orderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order(attrs);
 };

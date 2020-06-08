@@ -11,6 +11,7 @@ declare global {
 }
 
 jest.mock('../nats-wrapper.ts');
+
 let mongo: any;
 beforeAll(async () => {
   process.env.JWT_KEY = 'zuly1960';
@@ -33,6 +34,7 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await mongo.stop();
+  await mongoose.connection.close();
 });
 
 global.signin = () => {
