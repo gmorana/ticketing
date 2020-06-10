@@ -2,6 +2,7 @@ import request from 'supertest';
 import moongose from 'mongoose';
 import { app } from '../../app';
 import { natsWrapper } from '../../nats-wrapper';
+import { Ticket } from '../../models/tickets';
 const createTicket = (title: string, price: number) => {
   const id = new moongose.Types.ObjectId().toHexString();
   return request(app)
@@ -136,4 +137,28 @@ it('publishes an event', async () => {
     })
     .expect(200);
   expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
+
+it('reject updates if the tickets is reserved', async () => {
+  let title = 'Abba Concert';
+  let price = 20;
+  const cookie = global.signin();
+  const res = await request(app)
+    .post(`/api/tickets`)
+    .set('Cookie', cookie)
+    .send({
+      title,
+      price,
+    });
+  const ticket = await Ticket.findById(res.body.id);
+  ticket!.set({ orderId: moongose.Types.ObjectId().toHexString() });
+  await ticket!.save();
+  await request(app)
+    .put(`/api/tickets/${res.body.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title,
+      price,
+    })
+    .expect(400);
 });
