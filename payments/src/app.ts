@@ -6,7 +6,7 @@ import cookieSession from 'cookie-session';
 import { json } from 'body-parser';
 
 import { erroHandler, NotFoundError, currentUser } from '@baritrade/common';
-
+import { createChargeRouter } from './routes/new';
 const app = express();
 app.set('trust proxy', true);
 app.use(json());
@@ -18,8 +18,10 @@ app.use(
   })
 );
 
-// All Routers
 app.use(currentUser);
+
+// All Routers
+app.use(createChargeRouter);
 
 // Handling not found routes
 app.all('*', async () => {
