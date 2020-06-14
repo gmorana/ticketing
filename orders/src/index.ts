@@ -8,7 +8,7 @@ import { PaymentCreatedListener } from './events/listeners/payment-created-liste
 const port = 3000;
 // Connecting DB
 const start = async () => {
-  console.log('Starting....');
+  console.log('Starting......');
   if (!process.env.JWT_KEY) {
     throw new Error('No JWT_KEY definition');
   }
