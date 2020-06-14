@@ -3,7 +3,7 @@ import { app } from './app';
 const port = 3000;
 // Connecting DB
 const start = async () => {
-  console.log('Starting up........');
+  console.log('Starting up.........');
   if (!process.env.JWT_KEY) {
     throw new Error('No JWT_KEY definition');
   }
