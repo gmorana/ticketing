@@ -1,4 +1,4 @@
-name: deploy-manisfests
+name: deploy-manifests
 
 on:
   push:
