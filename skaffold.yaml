@@ -6,12 +6,12 @@ deploy:
       - ./infra/k8s/*
       - ./infra/k8s-dev/*
 build:
-  # local:
-  #   push: false
-  googleCloudBuild:
-    projectId: deft-ocean-276416
+  local:
+    push: false
+  # googleCloudBuild:
+  #   projectId: deft-ocean-276416
   artifacts:
-    - image: us.gcr.io/deft-ocean-276416/auth
+    - image: gmorana/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -19,7 +19,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/deft-ocean-276416/client
+    - image: gmorana/client
       context: client
       docker:
         dockerfile: Dockerfile
@@ -27,7 +27,7 @@ build:
         manual:
           - src: '**/*.js'
             dest: .
-    - image: us.gcr.io/deft-ocean-276416/tickets
+    - image: gmorana/tickets
       context: tickets
       docker:
         dockerfile: Dockerfile
@@ -35,7 +35,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/deft-ocean-276416/orders
+    - image: gmorana/orders
       context: orders
       docker:
         dockerfile: Dockerfile
@@ -43,7 +43,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/deft-ocean-276416/expiration
+    - image: gmorana/expiration
       context: expiration
       docker:
         dockerfile: Dockerfile
@@ -51,7 +51,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: us.gcr.io/deft-ocean-276416/payments
+    - image: gmorana/payments
       context: payments
       docker:
         dockerfile: Dockerfile
