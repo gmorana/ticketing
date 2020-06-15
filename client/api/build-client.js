@@ -8,7 +8,7 @@ export default ({ req }) => {
     // http://servicename.namespace.svc.cluster.local
 
     return axios.create({
-      baseURL: 'http://www.ticketing-dev.xyz/',
+      baseURL: 'http://www.ticketing-dev.xyz',
       headers: req.headers,
     });
   } else {
